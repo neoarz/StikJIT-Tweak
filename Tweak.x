@@ -37,21 +37,21 @@ void openStikJIT() {
 
 void showAnimationThenOpenStikJIT() {
   dispatch_async(dispatch_get_main_queue(), ^{
-    if (isJITEnabled()) {
-      return;
-    }
-    
     UIWindowScene *scene = 
         (UIWindowScene *)[[UIApplication sharedApplication].connectedScenes allObjects].firstObject;
     
     if (![scene isKindOfClass:[UIWindowScene class]]) {
-      openStikJIT();
+      if (!isJITEnabled()) {
+        openStikJIT();
+      }
       return;
     }
 
     UIWindow *window = scene.windows.firstObject;
     if (!window) {
-      openStikJIT();
+      if (!isJITEnabled()) {
+        openStikJIT();
+      }
       return;
     }
   
@@ -83,7 +83,7 @@ void showAnimationThenOpenStikJIT() {
     NSString *contentString;
 
     if (isJITEnabled()) {
-      contentString = @"JIT Enabled!";
+      contentString = @"JIT Successfully Enabled!";
     } else {
       // Get app name from the main bundle
       NSString *appName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"];
@@ -132,6 +132,7 @@ void showAnimationThenOpenStikJIT() {
     webView.navigationDelegate = webDelegate;
 
     if (isJITEnabled()) {
+      // Show "JIT Successfully Enabled!" for 1 second, then fade out
       dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC),
                      dispatch_get_main_queue(), ^{
                        [UIView animateWithDuration:0.3
@@ -145,13 +146,13 @@ void showAnimationThenOpenStikJIT() {
                            }];
                      });
     } else {
-      // Show animation for 2 seconds, then open StikJIT
+      // Show animation for 0.75 seconds, then open StikJIT
       dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.75 * NSEC_PER_SEC),
                     dispatch_get_main_queue(), ^{
                       // Open StikJIT
                       openStikJIT();
                       
-                      // Fade out the animation
+                      // Fade out the animation after a small delay
                       dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC),
                                     dispatch_get_main_queue(), ^{
                                       [UIView animateWithDuration:0.3
