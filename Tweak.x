@@ -59,28 +59,26 @@ void showAnimationThenOpenStikJIT() {
       window.rootViewController.view.backgroundColor = [UIColor blackColor];
     }
 
-    CGFloat height = 70;
-    CGFloat margin = 40;
+    CGFloat height = 80;
+    CGFloat margin = 50;
 
     // html webview
     UIEdgeInsets safeAreaInsets = window.safeAreaInsets;
 
-  NSString *baseHTML =
-    @"<html><body><div class=child></div><div class=content><div id=content>%@</div></div>"
-    @"<style>*{-webkit-user-select:none;margin:0;padding:0;box-sizing:border-box;overflow:hidden;}"
-    @"html,body{width:100%%;height:100vh;display:grid;place-items:center;"
-    @"background:conic-gradient(#2377fa 0deg, #8a4bfd 90deg, #ff375f 180deg, #ffbd2e 270deg, #2377fa 360deg);overflow:hidden;}"
-    @".child{backdrop-filter:blur(10px);position:absolute;width:100vw;height:100vh;background:black;filter:blur(35px)}"
-    @".content{position:relative;color:white;font-size:calc(2.5rem + 1vw);font-family:system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;text-align:left;width:auto;}"
-    @"#content{width:auto;text-shadow:0 3px 6px rgba(0,0,0,0.65);font-weight:600;letter-spacing:0.8px;opacity:0;animation:fadeIn 0.5s ease-out forwards;black-space:nowrap;padding-left:15px;}" // Left-aligned content
-    @".app-name{text-decoration:underline;text-underline-offset:5px;text-decoration-thickness:2px;background:linear-gradient(90deg,#54a9ff,#c49bff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:700;text-shadow:none;}"
-    @"@keyframes fadeIn{to{opacity:1}}</style>"
-    @"<script>let a=0;setInterval(()=>{a+=.9;a>=360&&(a=0);"
-    @"document.body.style.background=`conic-gradient(from ${a}deg,#2377fa,#8a4bfd 90deg,#ff375f 180deg,#ffbd2e 270deg,#2377fa 360deg)`},10);"
-    @"document.addEventListener('dblclick',e=>e.preventDefault(),{passive:!1});"
-    @"document.addEventListener('touchstart',e=>{if(e.touches.length>1)e.preventDefault()},{passive:!1});</script></body></html>";
-
-
+    NSString *baseHTML =
+       @"<html><body><div class=child></div><div class=content><div id=content>%@</div></div>"
+       @"<style>*{-webkit-user-select:none;margin:0;padding:0;box-sizing:border-box}"
+       @"html,body{width:100vw;height:100vh;display:flex;justify-content:center;align-items:center;"
+       @"background:conic-gradient(#a5ab9d 0deg,#2dc0f5 45deg,#9572ed 135deg,#db3a76 225deg,#b06452 315deg,#a5ab9d 360deg)}"
+       @".child{backdrop-filter:blur(10px);position:absolute;width:97vw;height:97vh;background:black;filter:blur(35px)}"
+       @".content{position:relative;color:white;font-size:calc(2.5rem + 1vw);font-family:system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;text-align:left;width:auto;}"
+       @"#content{width:auto;text-shadow:0 3px 6px rgba(0,0,0,0.85);font-weight:700;letter-spacing:0.8px;opacity:0;animation:fadeIn 0.5s ease-out forwards;black-space:nowrap;padding-left:15px;}" 
+       @".app-name{text-decoration:underline;text-underline-offset:5px;text-decoration-thickness:2px;background:linear-gradient(90deg,#54a9ff,#c49bff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:700;text-shadow:none;}"
+       @"@keyframes fadeIn{to{opacity:1}}</style>"
+       @"<script>let a=0;setInterval(()=>{a+=.9;a>=360&&(a=0);"
+       @"document.body.style.background=`conic-gradient(from ${a}deg,#a5ab9d,#2dc0f5 45deg,#9572ed 135deg,#db3a76 225deg,#b06452 315deg,#a5ab9d)`},10);"
+       @"document.addEventListener('dblclick',e=>e.preventDefault(),{passive:!1});"
+       @"document.addEventListener('touchstart',e=>{if(e.touches.length>1)e.preventDefault()},{passive:!1});</script></body></html>";
 
     NSString *contentString;
 
@@ -106,19 +104,14 @@ void showAnimationThenOpenStikJIT() {
                          [[htmlTemplate dataUsingEncoding:NSUTF8StringEncoding]
                              base64EncodedStringWithOptions:0]];
 
-    // Center the webView properly in the window
-    CGFloat webViewWidth = window.frame.size.width - 30;
-    CGFloat xPosition = (window.frame.size.width - webViewWidth) / 2;
-    
     WKWebView *webView = [[WKWebView alloc]
-        initWithFrame:CGRectMake(xPosition, safeAreaInsets.top + margin,
-                                 webViewWidth, height)];
-    webView.layer.cornerRadius = 18;
+        initWithFrame:CGRectMake(15, safeAreaInsets.top + margin,
+                                 window.frame.size.width - 30, height)];
+    webView.layer.cornerRadius = 23;
     webView.layer.masksToBounds = YES;
-    webView.alpha = 0.75;
+    webView.alpha = 0.85;
     webView.scrollView.scrollEnabled = NO;
     webView.backgroundColor = [UIColor clearColor];
-
 
     [webView loadRequest:[NSURLRequest
                              requestWithURL:[NSURL URLWithString:dataURL]]];
@@ -130,7 +123,7 @@ void showAnimationThenOpenStikJIT() {
     UIVisualEffectView *blurEffectView =
         [[UIVisualEffectView alloc] initWithEffect:blurEffect];
     blurEffectView.frame = webView.frame;
-    blurEffectView.layer.cornerRadius = 18;
+    blurEffectView.layer.cornerRadius = 23;
     blurEffectView.layer.masksToBounds = YES;
     [window.rootViewController.view insertSubview:blurEffectView
                                      belowSubview:webView];
@@ -179,3 +172,4 @@ void showAnimationThenOpenStikJIT() {
 %ctor {
   showAnimationThenOpenStikJIT();
 }
+
