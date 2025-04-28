@@ -54,6 +54,10 @@ void showAnimationThenOpenStikJIT() {
       openStikJIT();
       return;
     }
+  
+    if (window.rootViewController) {
+      window.rootViewController.view.backgroundColor = [UIColor blackColor];
+    }
 
     CGFloat height = 70;
     CGFloat margin = 40;
@@ -66,9 +70,9 @@ void showAnimationThenOpenStikJIT() {
     @"<style>*{-webkit-user-select:none;margin:0;padding:0;box-sizing:border-box;overflow:hidden;}"
     @"html,body{width:100%%;height:100vh;display:grid;place-items:center;"
     @"background:conic-gradient(#2377fa 0deg, #8a4bfd 90deg, #ff375f 180deg, #ffbd2e 270deg, #2377fa 360deg);overflow:hidden;}"
-    @".child{backdrop-filter:blur(10px);position:absolute;width:99vw;height:97vh;background:black;filter:blur(35px)}"
+    @".child{backdrop-filter:blur(10px);position:absolute;width:100vw;height:100vh;background:black;filter:blur(35px)}"
     @".content{position:relative;color:white;font-size:calc(2.5rem + 1vw);font-family:system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;text-align:left;width:auto;}"
-    @"#content{width:auto;text-shadow:0 3px 6px rgba(0,0,0,0.65);font-weight:600;letter-spacing:0.8px;opacity:0;animation:fadeIn 0.5s ease-out forwards;white-space:nowrap;padding-left:0px;}" // Left-aligned content
+    @"#content{width:auto;text-shadow:0 3px 6px rgba(0,0,0,0.65);font-weight:600;letter-spacing:0.8px;opacity:0;animation:fadeIn 0.5s ease-out forwards;black-space:nowrap;padding-left:15px;}" // Left-aligned content
     @".app-name{text-decoration:underline;text-underline-offset:5px;text-decoration-thickness:2px;background:linear-gradient(90deg,#54a9ff,#c49bff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:700;text-shadow:none;}"
     @"@keyframes fadeIn{to{opacity:1}}</style>"
     @"<script>let a=0;setInterval(()=>{a+=.9;a>=360&&(a=0);"
@@ -104,7 +108,7 @@ void showAnimationThenOpenStikJIT() {
 
     // Center the webView properly in the window
     CGFloat webViewWidth = window.frame.size.width - 30;
-    CGFloat xPosition = 15;
+    CGFloat xPosition = (window.frame.size.width - webViewWidth) / 2;
     
     WKWebView *webView = [[WKWebView alloc]
         initWithFrame:CGRectMake(xPosition, safeAreaInsets.top + margin,
