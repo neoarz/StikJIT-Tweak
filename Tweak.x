@@ -63,16 +63,16 @@ void showAnimationThenOpenStikJIT() {
 
   NSString *baseHTML =
     @"<html><body><div class=child></div><div class=content><div id=content>%@</div></div>"
-    @"<style>*{-webkit-user-select:none;margin:0;padding:0;box-sizing:border-box}"
-    @"html,body{width:100vw;height:100vh;display:grid;place-items:center;"
-    @"background:conic-gradient(#36e2ec 0deg,#45c6e9 45deg,#5396e4 135deg,#4078d6 225deg,#3561c7 315deg,#36e2ec 360deg)}"
-    @".child{backdrop-filter:blur(10px);position:absolute;width:97vw;height:97vh;background:black;filter:blur(35px)}"
+    @"<style>*{-webkit-user-select:none;margin:0;padding:0;box-sizing:border-box;overflow:hidden;}"
+    @"html,body{width:100%%;height:100vh;display:grid;place-items:center;"
+    @"background:conic-gradient(#2377fa 0deg, #8a4bfd 90deg, #ff375f 180deg, #ffbd2e 270deg, #2377fa 360deg);overflow:hidden;}"
+    @".child{backdrop-filter:blur(10px);position:absolute;width:99vw;height:97vh;background:black;filter:blur(35px)}"
     @".content{position:relative;color:white;font-size:calc(2.5rem + 1vw);font-family:system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;text-align:left;width:auto;}"
-    @"#content{width:auto;text-shadow:0 3px 6px rgba(0,0,0,0.65);font-weight:600;letter-spacing:0.8px;opacity:0;animation:fadeIn 0.5s ease-out forwards;white-space:nowrap;padding-left:15px;}" // Left-aligned content
-    @".app-name{text-decoration:underline;text-underline-offset:5px;text-decoration-thickness:2px;background:linear-gradient(90deg,#36e2ec,#5396e4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:700}"
+    @"#content{width:auto;text-shadow:0 3px 6px rgba(0,0,0,0.65);font-weight:600;letter-spacing:0.8px;opacity:0;animation:fadeIn 0.5s ease-out forwards;white-space:nowrap;padding-left:0px;}" // Left-aligned content
+    @".app-name{text-decoration:underline;text-underline-offset:5px;text-decoration-thickness:2px;background:linear-gradient(90deg,#54a9ff,#c49bff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:700;text-shadow:none;}"
     @"@keyframes fadeIn{to{opacity:1}}</style>"
     @"<script>let a=0;setInterval(()=>{a+=.9;a>=360&&(a=0);"
-    @"document.body.style.background=`conic-gradient(from ${a}deg,#36e2ec,#45c6e9 45deg,#5396e4 135deg,#4078d6 225deg,#3561c7 315deg,#36e2ec)`},10);"
+    @"document.body.style.background=`conic-gradient(from ${a}deg,#2377fa,#8a4bfd 90deg,#ff375f 180deg,#ffbd2e 270deg,#2377fa 360deg)`},10);"
     @"document.addEventListener('dblclick',e=>e.preventDefault(),{passive:!1});"
     @"document.addEventListener('touchstart',e=>{if(e.touches.length>1)e.preventDefault()},{passive:!1});</script></body></html>";
 
@@ -114,6 +114,7 @@ void showAnimationThenOpenStikJIT() {
     webView.alpha = 0.75;
     webView.scrollView.scrollEnabled = NO;
     webView.backgroundColor = [UIColor clearColor];
+
 
     [webView loadRequest:[NSURLRequest
                              requestWithURL:[NSURL URLWithString:dataURL]]];
