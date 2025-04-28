@@ -1,0 +1,47 @@
+name: Build and Release
+
+on:
+  push:
+    branches: [ main, master ]
+    tags: [ '*' ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        
+      - name: Setup Theos
+        run: |
+          brew install ldid xz
+          git clone --recursive https://github.com/theos/theos.git $GITHUB_WORKSPACE/theos
+          echo "THEOS=$GITHUB_WORKSPACE/theos" >> $GITHUB_ENV
+          echo "PATH=$GITHUB_WORKSPACE/theos/bin:$PATH" >> $GITHUB_ENV
+          
+      - name: Setup SDK
+        run: |
+          curl -LO https://github.com/theos/sdks/archive/master.zip
+          unzip master.zip -d $GITHUB_WORKSPACE
+          mv $GITHUB_WORKSPACE/sdks-master/*.sdk $GITHUB_WORKSPACE/theos/sdks/
+          rm -rf master.zip $GITHUB_WORKSPACE/sdks-master
+          
+      - name: Build Package
+        run: |
+          make package FINALPACKAGE=1
+          
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: StikJIT
+          path: packages/*.deb
+          
+      - name: Create Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          files: packages/*.deb
+          generate_release_notes: true 

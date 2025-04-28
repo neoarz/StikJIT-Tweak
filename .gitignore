@@ -1,0 +1,13 @@
+.DS_Store
+.theos/
+packages/
+*.deb
+.vscode/
+*.xcworkspace/
+*.xcodeproj/
+.idea/
+obj/
+*~
+._*
+*.swp
+*.bak 
